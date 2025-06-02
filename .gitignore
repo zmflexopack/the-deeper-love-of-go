@@ -1,0 +1,806 @@
+### Question:
+I am reading a go Book. Is this function name idiomatic go?
+TestBookToString_FormatsBookInfoAsString
+
+### Answer:
+The function name `TestBookToString_FormatsBookInfoAsString` is not entirely idiomatic Go. While it follows some Go conventions, there are a few adjustments we can make to improve it according to Go's naming conventions and best practices for test functions.
+
+In Go, the general convention for test function names is:
+
+1. Start with "Test"
+2. Followed by the name of the function being tested
+3. Optionally, add a brief description of the specific scenario being tested
+
+Here's how we could improve the function name:
+
+1. `TestBookToString` is good as it starts with "Test" and includes the name of the function being tested.
+2. The part after the underscore describes what the test does, which is fine, but we can make it more concise.
+
+A more idiomatic Go test function name would be:
+
+```go
+TestBookToString_Format
+```
+
+or
+
+```go
+TestBookToString_Formatting
+```
+
+These names are more concise while still conveying the purpose of the test. In Go, brevity is often preferred, and the fact that it's testing the formatting is implied by the nature of the `BookToString` function.
+
+If you want to be more specific about what aspect of formatting is being tested, you could use:
+
+```go
+TestBookToString_CorrectFormat
+```
+
+Remember, in Go, the use of underscores in function names is not common except in test function names, where they're used to separate the function name being tested from the specific scenario being tested.
+
+To modify your code to use this more idiomatic name, you would change:
+
+**File: c:\Go\the-deeper-love-of-go\books\main.go**
+```go
+func TestBookToString_Format() {
+    input := Book{
+        Title:  "Sea Room",
+        Author: "Adam Nicolson",
+        Copies: 2,
+    }
+    want := "Sea Room by Adam Nicolson - 2 copies"
+    got := BookToString(input)
+    if want != got {
+        panic("BookToString: unexpected result")
+    }
+}
+```
+
+Don't forget to update the function call in your `main` function as well:
+
+```go
+func main() {
+    TestBookToString_Format()
+    fmt.Println("It is all good")
+}
+```
+
+This naming convention is more aligned with idiomatic Go and still clearly communicates the purpose of the test function.
+
+### Question:
+This function is part of my learning process, so updating it is not important. The issue is me to learn idiomatic go. So, Test funcitons:
+Must start with word Test, followed by the name of the function that we are testing, then underscore and in shortest term possilbe explain what we are testing. Right?
+
+### Answer:
+You've got it exactly right! Your understanding of Go test function naming conventions is spot on. Let's break it down to confirm:
+
+1. Must start with the word "Test"
+2. Followed by the name of the function being tested
+3. Then an underscore
+4. Finally, a brief description of what's being tested, in the shortest terms possible
+
+So your formulation is perfectly correct. This convention helps in quickly identifying:
+- That it's a test function (Test prefix)
+- Which function it's testing (function name)
+- What specific aspect or scenario it's testing (brief description)
+
+Here's a quick example to illustrate:
+
+```go
+func TestSomeFunction_SpecificScenario()
+```
+
+Your understanding of this naming convention will serve you well as you continue learning and writing idiomatic Go. It's great that you're paying attention to these details, as they contribute to writing clean, readable, and maintainable Go code.
+
+Remember, while the naming convention is important, the most crucial aspect is that your tests are thorough and effectively verify the behavior of your code. Keep up the good work in your learning journey!
+
+### Question:
+From the book that I read:
+
+Creating a module
+You already know what a package is, and a module is a group of packages that live to‐
+gether. In fact, there needn’t be more than one package, and in our case there isn’t.
+However, every package needs to be part of a module, so let’s call this one books. Run
+the following command:
+go mod init books
+go: creating new go.mod: module books
+go: to add module requirements and sums:
+go mod tidy
+Notice that a new file has been created, named go.mod, with the following contents:
+module books
+go 1.22.0 // or whatever Go version you're using
+
+Author do have a knowledge to write a book, but writing a book requries some other tallents too, which he lack....So what will happen if I run those commands in my directory books, or in the directory the-deeper-love-of-go?
+
+### Answer:
+Your observation is astute. The author's instructions are somewhat simplified and don't account for your specific project structure. Let's clarify what would happen and what you should do:
+
+1. If you run `go mod init books` in your `books` directory:
+   This would create a new module named "books" for that specific directory. However, this might not be what you want if your `books` directory is meant to be part of a larger project.
+
+2. If you run `go mod init books` in your `the-deeper-love-of-go` directory:
+   This would create a module named "books" for your entire project, which isn't ideal because your project name is different.
+
+In your case, since you already have a project structure, here's what you should do:
+
+1. Navigate to your root project directory (`the-deeper-love-of-go`).
+
+2. Run the following command:
+
+   ```
+   go mod init github.com/yourusername/the-deeper-love-of-go
+   ```
+
+   Replace `yourusername` with your actual GitHub username if you plan to host it there, or use any other appropriate module path.
+
+3. After that, run:
+
+   ```
+   go mod tidy
+   ```
+
+This approach will:
+- Create a single module for your entire project.
+- Use a more appropriate module name that reflects your project structure.
+- Allow you to have multiple packages (like `books`) within your module.
+
+Your `go.mod` file will look something like this:
+
+**File: c:\Go\the-deeper-love-of-go\go.mod**
+```
+module github.com/yourusername/the-deeper-love-of-go
+
+go 1.22.0  // or whatever Go version you're using
+```
+
+This structure allows you to import packages within your project like this:
+
+```go
+import "github.com/yourusername/the-deeper-love-of-go/books"
+```
+
+Remember, in Go, it's common to have one module per project, not per package. The author's simplification might work for very small, single-package projects, but for a more structured project like yours, the approach I've outlined is more appropriate.
+
+### Question:
+OK. What if I get out of this project - folder the-deeper-love-of-go and create folder books right under my C:Go folder, where the the-deeper-love-of-go...?
+
+### Answer:
+Certainly! If you decide to create a new, separate project called "books" directly under your C:\Go folder, independent of your "the-deeper-love-of-go" project, then the author's instructions would be more applicable. Here's what you would do:
+
+1. Create a new folder:
+   ```
+   mkdir C:\Go\books
+   ```
+
+2. Navigate to this new folder:
+   ```
+   cd C:\Go\books
+   ```
+
+3. Initialize a new Go module:
+   ```
+   go mod init books
+   ```
+
+4. After creating some Go files, run:
+   ```
+   go mod tidy
+   ```
+
+In this scenario:
+
+- You're creating a standalone project named "books".
+- The module name "books" is appropriate because it's a self-contained project.
+- This new "books" project is completely separate from "the-deeper-love-of-go".
+
+Your new directory structure would look like this:
+
+```
+C:\Go\
+    ├── books\                 (New project)
+    │   ├── go.mod
+    │   ├── main.go
+    │   └── main_test.go
+    │
+    └── the-deeper-love-of-go\ (Existing project)
+        └── ...
+```
+
+The `go.mod` file in your new "books" project would contain:
+
+**File: C:\Go\books\go.mod**
+```
+module books
+
+go 1.22.0  // or whatever Go version you're using
+```
+
+This approach aligns with the book's instructions and is suitable for small, self-contained projects or when you're learning Go and want to create simple, independent modules.
+
+Remember, this new "books" project would be entirely separate from your "the-deeper-love-of-go" project. If you want to keep all your learning exercises together, you might prefer to keep everything within "the-deeper-love-of-go" as subpackages. The choice depends on how you want to organize your learning and projects.
+
+### Question:
+Here is the link of his repository as of this point of time in the book
+Notice that a new file has been created, named go.mod, with the following contents:
+module books
+go 1.22.0 // or whatever Go version you're using
+(Listing books/9)
+
+Link goes to:
+https://github.com/bitfield/love/tree/main/books/9
+
+### Answer:
+Thank you for providing that link. After reviewing the GitHub repository, I can offer some clarifications:
+
+1. The author's approach in the book and the repository:
+   The author is treating each step or listing as a separate, standalone project. This is why you see multiple directories (1, 2, 3, ..., 9) under the 'books' folder, each representing a different stage of the project.
+
+2. Structure in the repository:
+   - The 'books' directory is part of a larger project/repository.
+   - Each numbered subdirectory (like '9') represents a specific state of the code.
+   - The `go.mod` file is present in each of these subdirectories.
+
+3. Implications for following along:
+   - If you're following the book exactly, you would create a new directory for each step, each with its own `go.mod` file.
+   - This approach allows readers to see the project evolve step-by-step, with each step being a self-contained module.
+
+4. What you should do:
+   a. If you want to follow the book's approach exactly:
+      - Create a new directory for each step (e.g., C:\Go\books\9)
+      - In each directory, run `go mod init books`
+      - This will create a separate module for each step
+
+   b. If you prefer a more typical project structure:
+      - Keep everything in your 'the-deeper-love-of-go' project
+      - Have a single `go.mod` file at the root of your project
+      - Organize code into packages within this project
+
+The author's approach is designed for teaching and demonstrating concepts incrementally. It's not typically how you'd structure a real-world project, but it serves an educational purpose by isolating each step.
+
+For your learning, you can choose to either:
+1. Follow the book's structure exactly, creating new directories for each step.
+2. Adapt the lessons to fit within your existing 'the-deeper-love-of-go' project structure.
+
+Both approaches have merit for learning. The first helps you follow along exactly with the book, while the second gives you practice in applying the concepts to a more realistic project structure.
+
+### Question:
+I prefer more typical project structure. Reason is - it is too much "paperwork" to create new folder - and move all files, modify one file....
+So - Can you guide me to create a module from this structure?
+
+### Answer:
+Absolutely! I agree that a more typical project structure is often more practical for learning and development. Let's set up your project with a single module structure. Here's how we can do it:
+
+1. First, navigate to your project root directory:
+
+```
+cd C:\Go\the-deeper-love-of-go
+```
+
+2. Initialize the Go module for your entire project:
+
+```
+go mod init github.com/yourusername/the-deeper-love-of-go
+```
+
+Replace `yourusername` with your GitHub username or use any other appropriate module path.
+
+3. This will create a `go.mod` file in your project root. The file will look something like this:
+
+**File: C:\Go\the-deeper-love-of-go\go.mod**
+```
+module github.com/yourusername/the-deeper-love-of-go
+
+go 1.22.0  // or whatever Go version you're using
+```
+
+4. Now, let's organize your code. You can keep your `books` related code in a `books` subdirectory:
+
+```
+mkdir books
+```
+
+5. Move your existing Go files into the `books` directory:
+
+```
+move main.go books\main.go
+move main_test.go books\main_test.go
+```
+
+6. Update the package declaration in your Go files. In both `main.go` and `main_test.go`, change the package declaration to:
+
+```go
+package books
+```
+
+7. Create a new `main.go` file in your project root to serve as the entry point of your application:
+
+**File: C:\Go\the-deeper-love-of-go\main.go**
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/yourusername/the-deeper-love-of-go/books"
+)
+
+func main() {
+	book := books.Book{
+		Title:  "Sea Room",
+		Author: "Adam Nicolson",
+		Copies: 2,
+	}
+	fmt.Println(books.BookToString(book))
+}
+```
+
+8. Finally, run `go mod tidy` to ensure all dependencies are properly managed:
+
+```
+go mod tidy
+```
+
+Your project structure should now look like this:
+
+```
+C:\Go\the-deeper-love-of-go\
+    ├── go.mod
+    ├── main.go
+    └── books\
+        ├── main.go
+        └── main_test.go
+```
+
+This structure allows you to:
+- Keep all your code in one project
+- Organize related functionality (like `books`) into packages
+- Have a single module for your entire project
+- Easily add more packages as your project grows
+
+Remember to update your import statements in any files that use the `books` package to:
+
+```go
+import "github.com/yourusername/the-deeper-love-of-go/books"
+```
+
+This approach gives you a more typical Go project structure while still allowing you to follow along with the book's content. You can continue adding new functionality to the `books` package or create new packages for different aspects of your project as you progress through the book.
+
+### Question:
+I have books directory in the-deeper-love-of-go. Should I create new one, if yes where? If not - what is next step?
+
+### Answer:
+I apologize for the confusion. Since you already have a `books` directory in your `the-deeper-love-of-go` project, we don't need to create a new one. Let's work with your existing structure. Here's what we'll do:
+
+1. First, navigate to your project root directory if you're not already there:
+
+```
+cd C:\Go\the-deeper-love-of-go
+```
+
+2. Initialize the Go module for your entire project:
+
+```
+go mod init github.com/yourusername/the-deeper-love-of-go
+```
+
+Replace `yourusername` with your GitHub username or use any other appropriate module path.
+
+3. This will create a `go.mod` file in your project root. The file will look something like this:
+
+**File: C:\Go\the-deeper-love-of-go\go.mod**
+```
+module github.com/yourusername/the-deeper-love-of-go
+
+go 1.22.0  // or whatever Go version you're using
+```
+
+4. Now, let's update the package declaration in your existing Go files in the `books` directory. In both `main.go` and `main_test.go` within the `books` directory, change the package declaration to:
+
+```go
+package books
+```
+
+5. Create a new `main.go` file in your project root to serve as the entry point of your application:
+
+**File: C:\Go\the-deeper-love-of-go\main.go**
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/yourusername/the-deeper-love-of-go/books"
+)
+
+func main() {
+	book := books.Book{
+		Title:  "Sea Room",
+		Author: "Adam Nicolson",
+		Copies: 2,
+	}
+	fmt.Println(books.BookToString(book))
+}
+```
+
+6. Finally, run `go mod tidy` to ensure all dependencies are properly managed:
+
+```
+go mod tidy
+```
+
+Your project structure should now look like this:
+
+```
+C:\Go\the-deeper-love-of-go\
+    ├── go.mod
+    ├── main.go
+    └── books\
+        ├── main.go
+        └── main_test.go
+```
+
+This structure allows you to:
+- Keep all your code in one project
+- Organize related functionality (like `books`) into packages
+- Have a single module for your entire project
+- Easily add more packages as your project grows
+
+Remember to update any import statements in files that use the `books` package to:
+
+```go
+import "github.com/yourusername/the-deeper-love-of-go/books"
+```
+
+These steps should set up your project with a proper module structure while maintaining your existing `books` directory. You can now continue adding new functionality to the `books` package or create new packages for different aspects of your project as you progress through the book.
+
+### Question:
+As I can see in my github account, the command module github.com/yourusername/the-deeper-love-of-go does not create a repository...I will need to create it, right?
+
+### Answer:
+You're absolutely correct, and I apologize for not clarifying this important point earlier. The `go mod init` command does not create a GitHub repository or interact with GitHub in any way. It only sets up the local module structure for your Go project. 
+
+To create a repository on GitHub and connect it to your local project, you'll need to follow these additional steps:
+
+1. First, ensure you have Git installed on your system.
+
+2. Initialize a Git repository in your local project folder (if you haven't already):
+
+   ```
+   git init
+   ```
+
+3. Go to GitHub in your web browser and log in.
+
+4. Click the '+' icon in the top right corner and select 'New repository'.
+
+5. Name your repository 'the-deeper-love-of-go'.
+
+6. Do not initialize the repository with a README, .gitignore, or license. You'll import an existing repository.
+
+7. Click 'Create repository'.
+
+8. GitHub will show you commands to push an existing repository. You'll use these commands in your local project directory:
+
+   ```
+   git remote add origin https://github.com/yourusername/the-deeper-love-of-go.git
+   git branch -M main
+   git push -u origin main
+   ```
+
+   Replace 'yourusername' with your actual GitHub username.
+
+9. Before pushing, you might want to add a .gitignore file to exclude certain files from version control. A typical .gitignore for Go projects might look like this:
+
+   **File: C:\Go\the-deeper-love-of-go\.gitignore**
+   ```
+   # Binaries for programs and plugins
+   *.exe
+   *.exe~
+   *.dll
+   *.so
+   *.dylib
+
+   # Test binary, built with `go test -c`
+   *.test
+
+   # Output of the go coverage tool, specifically when used with LiteIDE
+   *.out
+
+   # Dependency directories (remove the comment below to include it)
+   # vendor/
+   ```
+
+10. Now, add your files, commit, and push:
+
+    ```
+    git add .
+    git commit -m "Initial commit"
+    git push -u origin main
+    ```
+
+After these steps, your local project will be connected to a GitHub repository, and the module path in your `go.mod` file will correctly reflect the GitHub repository path.
+
+Remember, the module path in `go.mod` is used by Go to locate and download your module if someone tries to use it as a dependency. It doesn't automatically create or link to a GitHub repository, but it should match your GitHub repository path for consistency and potential future use.
+
+### Question:
+Ok, because I have already run that command with books so what to do now?
+
+### Answer:
+I see that you've already initialized your Go module with the correct module path. This is great! The `go.mod` file you've shown is correctly set up for your project. Here are the next steps you should take:
+
+1. Ensure your code is organized correctly:
+   - Your `books` package should be in the `books` directory.
+   - The `main.go` and `main_test.go` files in the `books` directory should have `package books` at the top.
+
+2. Create a new `main.go` file in your project root (if you haven't already):
+
+**File: c:\Go\the-deeper-love-of-go\main.go**
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/zmflexopack/the-deeper-love-of-go/books"
+)
+
+func main() {
+	book := books.Book{
+		Title:  "Sea Room",
+		Author: "Adam Nicolson",
+		Copies: 2,
+	}
+	fmt.Println(books.BookToString(book))
+}
+```
+
+3. Run `go mod tidy` to ensure all dependencies are properly managed:
+   ```
+   go mod tidy
+   ```
+
+4. Try building and running your project:
+   ```
+   go build
+   ./the-deeper-love-of-go
+   ```
+
+5. If you haven't already, initialize a git repository and create a `.gitignore` file:
+   ```
+   git init
+   ```
+
+   Create a `.gitignore` file with the following content:
+
+**File: c:\Go\the-deeper-love-of-go\.gitignore**
+```
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+*.out
+
+# Dependency directories (remove the comment below to include it)
+# vendor/
+```
+
+6. Add your files, commit, and push to GitHub:
+   ```
+   git add .
+   git commit -m "Initial commit"
+   git remote add origin https://github.com/zmflexopack/the-deeper-love-of-go.git
+   git push -u origin main
+   ```
+
+   (Make sure you've created the repository on GitHub first)
+
+These steps will ensure that your project is properly set up as a Go module, your code is organized correctly, and your project is ready for version control with Git and GitHub. You can now continue developing your project, adding more functionality to the `books` package or creating new packages as needed.
+
+### Question:
+Can you check my files and see what is wrong, I get errors in 2 files now?
+
+### Answer:
+I can see the issue. The problem is that your `main_test.go` file in the `books` directory is still using `package main`, which is incorrect for a package that should be importable. Let's fix this and review the other file as well.
+
+1. First, let's correct the `main_test.go` file:
+
+**File: c:\Go\the-deeper-love-of-go\books\main_test.go**
+```go
+package books
+
+import "testing"
+
+func TestBookToString_FormatsBookInfoAsString(t *testing.T) {
+	input := Book{
+		Title:  "Sea Room",
+		Author: "Adam Nicolson",
+		Copies: 2,
+	}
+
+	want := "Sea Room by Adam Nicolson - 2 copies"
+	got := BookToString(input)
+	if want != got {
+		t.Fatalf("BookToString: unexpected result\nwant: %q\ngot: %q", want, got)
+	}
+}
+```
+
+2. Now, let's check the `main.go` file in the `books` directory:
+
+**File: c:\Go\the-deeper-love-of-go\books\main.go**
+```go
+package books
+
+import "fmt"
+
+type Book struct {
+	Title  string
+	Author string
+	Copies int
+}
+
+func BookToString(book Book) string {
+	return fmt.Sprintf("%s by %s - %d copies", book.Title, book.Author, book.Copies)
+}
+```
+
+3. Finally, let's ensure the main `main.go` file in the project root is correct:
+
+**File: c:\Go\the-deeper-love-of-go\main.go**
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/zmflexopack/the-deeper-love-of-go/books"
+)
+
+func main() {
+	book := books.Book{
+		Title:  "Sea Room",
+		Author: "Adam Nicolson",
+		Copies: 2,
+	}
+	fmt.Println(books.BookToString(book))
+}
+```
+
+The key changes are:
+
+1. In `books/main_test.go`, change `package main` to `package books`.
+2. Ensure `books/main.go` also uses `package books`.
+3. The main `main.go` file in the project root should use `package main` and import the `books` package.
+
+After making these changes, your project structure should look like this:
+
+```
+c:\Go\the-deeper-love-of-go\
+    ├── go.mod
+    ├── main.go (package main)
+    └── books\
+        ├── main.go (package books)
+        └── main_test.go (package books)
+```
+
+Now, try running your tests from the project root:
+
+```
+go test ./...
+```
+
+And try building and running your main program:
+
+```
+go build
+./the-deeper-love-of-go
+```
+
+These changes should resolve the errors you were experiencing. The main issues were likely related to package naming and import paths. Remember, in Go, the package name for test files should match the package they're testing, except for `main` packages where test files use `package main_test`.
+
+### Question:
+OK, the only remain issue is - my main function in main.go is - unused....
+
+### Answer:
+I see the issue now. You have a `main` function in your `books/main.go` file, which is incorrect for a package that's meant to be imported. Let's fix this:
+
+1. Remove the `main` function from your `books/main.go` file. Here's how the file should look:
+
+**File: c:\Go\the-deeper-love-of-go\books\main.go**
+```go
+package books
+
+import (
+	"fmt"
+)
+
+type Book struct {
+	Title  string
+	Author string
+	Copies int
+}
+
+func BookToString(book Book) string {
+	return fmt.Sprintf("%s by %s - %d copies", 
+		book.Title, book.Author, book.Copies)
+}
+```
+
+2. Now, let's ensure your root `main.go` file is correctly set up to use the `books` package:
+
+**File: c:\Go\the-deeper-love-of-go\main.go**
+```go
+package main
+
+import (
+	"fmt"
+	"github.com/zmflexopack/the-deeper-love-of-go/books"
+)
+
+func main() {
+	book := books.Book{
+		Title:  "Sea Room",
+		Author: "Adam Nicolson",
+		Copies: 2,
+	}
+	fmt.Println(books.BookToString(book))
+}
+```
+
+These changes will resolve the issue of the unused `main` function in your `books` package. Remember:
+
+- The `books` package (in the `books` directory) should not have a `main` function. It's a library package meant to be imported and used by other packages.
+- The `main` function should only be in files that are part of the `main` package, typically in the root of your project.
+
+After making these changes, try building and running your project:
+
+```
+go build
+./the-deeper-love-of-go
+```
+
+This should now work without any unused function warnings, and it will correctly use your `books` package.
+
+### Question:
+Ok, let me keep reading, I think that I some point I will have to create the repository for this project I guess....
+
+### Answer:
+You're absolutely right. Your current `go.mod` file is correctly set up for your local development, but you haven't created a GitHub repository for it yet. This is perfectly fine for now as you continue learning and developing your project locally.
+
+Here's what you need to know:
+
+1. Your `go.mod` file is correctly configured for future GitHub hosting.
+
+2. You can continue developing your project locally without a GitHub repository.
+
+3. When you're ready to push your project to GitHub:
+   - Create a new repository on GitHub named "the-deeper-love-of-go"
+   - Initialize git in your local project (if you haven't already):
+     ```
+     git init
+     ```
+   - Add your files and make an initial commit:
+     ```
+     git add .
+     git commit -m "Initial commit"
+     ```
+   - Link your local repository to the GitHub repository:
+     ```
+     git remote add origin https://github.com/zmflexopack/the-deeper-love-of-go.git
+     ```
+   - Push your code to GitHub:
+     ```
+     git push -u origin main
+     ```
+
+4. Creating the GitHub repository doesn't affect your Go code or module structure. It's just for version control and sharing your code.
+
+For now, you can continue reading and working on your project locally. The `go.mod` file you have is perfect for your current setup and future GitHub hosting. When you decide it's time to create the repository, just follow the steps above.
+
+Keep learning and developing your project. When you feel ready to share your code or start using version control with GitHub, you can create the repository then. There's no rush, and it won't affect your ability to work on and run your Go code locally.
+
+### Question:
+OK, let me make this folder - a git repository. Any suggestion for .gitignore file?
