@@ -13,4 +13,8 @@ func main() {
         Copies: 2,
     }
     fmt.Println(books.BookToString(book))
+    //fmt.Println(books.GetAllBooks())
+    for _,book := range books.GetAllBooks(){
+        fmt.Println(books.BookToString(book))
+    }
 }
