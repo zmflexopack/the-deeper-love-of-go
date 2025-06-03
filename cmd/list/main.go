@@ -1,11 +1,5 @@
 package main
 
-// import (
-// 	"fmt"
-
-// 	"github.com/zmflexopack/the-deeper-love-of-go/books"
-// )
-
 import (
 	"fmt"
 
