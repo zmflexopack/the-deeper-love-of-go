@@ -1,41 +1,33 @@
 package books_test
 
 import (
+	"cmp"
 	"slices"
 	"testing"
 
 	"github.com/zmflexopack/the-deeper-love-of-go/books"
 )
-func TestBookToString_FormatsBookInfoAsString(t *testing.T) {
-	input := books.Book{
-		Title:"Sea Room",
-		Author: "Adam Nicolson",
-		Copies: 2,
-	}
-	want := "Sea Room by Adam Nicolson (copies: 2)"
-	got := books.BookToString(input)
-	if want != got {
-		t.Fatalf("want %q, got %q", want, got)
-	}
-}
 
 func TestGetAllBooks_ReturnsAllBooks(t *testing.T) {
 	t.Parallel()
 	want := []books.Book{
 		{
-			Title: "In the Company of Cheerful Ladies",
+			Title:  "In the Company of Cheerful Ladies",
 			Author: "Alexander McCall Smith",
 			Copies: 1,
-			ID: "abc",
+			ID:     "abc",
 		},
 		{
-			Title: "White Heat",
+			Title:  "White Heat",
 			Author: "Dominic Sandbrook",
 			Copies: 2,
-			ID: "xyz",
+			ID:     "xyz",
 		},
 	}
 	got := books.GetAllBooks()
+	slices.SortFunc(got, func(a, b books.Book) int {
+		return cmp.Compare(a.Author, b.Author)
+	})
 	if !slices.Equal(want, got) {
 		t.Fatalf("want %#v, got %#v", want, got)
 	}
@@ -61,8 +53,26 @@ func TestGetBook_FindsBookInCatalogByID(t *testing.T) {
 func TestGetBook_ReturnsFalseWhenBookNotFound(t *testing.T) {
 	t.Parallel()
 	_, ok := books.GetBook("nonexistent ID")
-		if ok {
-			t.Fatal("want false for nonexistent ID got true")
-		}
+	if ok {
+		t.Fatal("want false for nonexistent ID, got true")
 	}
+}
 
+func TestAddBook_AddsGivenBookToCatalog(t *testing.T) {
+	t.Parallel()
+	_, ok := books.GetBook("123")
+	if ok {
+		t.Fatal("book already present")
+	}
+	books.AddBook(books.Book{
+		ID:"123",
+		Title:"The Prize of all the Oceans",
+		Author: "Glyn Williams",
+		Copies: 2,
+	})
+
+	_, ok = books.GetBook("123")
+		if !ok {
+		t.Fatal("added book not found")
+	}
+}
