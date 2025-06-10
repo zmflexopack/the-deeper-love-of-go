@@ -13,9 +13,9 @@ type Book struct {
 	ID     string
 }
 
-func BookToString(book Book) string {
+func (book Book) String() string {
 	return fmt.Sprintf("%v by %v (copies: %v)",
-		book.Title, book.Author, book.Copies)
+	book.Title, book.Author, book.Copies)
 }
 
 func GetAllBooks(catalog map[string]Book) []Book {
